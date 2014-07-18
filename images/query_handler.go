@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/arjunsharma/gobot/presenters"
 	"github.com/gorilla/mux"
 )
 
@@ -31,8 +32,7 @@ func QueryHandler(writer http.ResponseWriter, request *http.Request) {
 
 	images := resp["responseData"].(map[string]interface{})["results"].([]interface{})
 	imageIndex := int(float32(len(images)) * rand.Float32())
-	imageUrl := images[imageIndex].(map[string]interface{})["url"].(string)
-	fmt.Fprintf(writer, "<html><body><img src='%s' /></body></html>", imageUrl)
 
+	presenters.PresentJson("image", images[imageIndex].(map[string]interface{})["url"].(string), writer)
 	return
 }

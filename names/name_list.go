@@ -1,9 +1,10 @@
 package names
 
 import (
-"math/rand"
-"strings"
+	"math/rand"
+	"strings"
 )
+
 var firstNames = []string{
 	"Launa",
 	"Tobias",
@@ -310,7 +311,7 @@ var lastNames = []string{
 }
 
 func randomName() string {
-	firstName := firstNames[rand.Int() % len(firstNames)]
-	lastName := lastNames[rand.Int() % len(lastNames)]
+	firstName := firstNames[rand.Int()%len(firstNames)]
+	lastName := lastNames[rand.Int()%len(lastNames)]
 	return strings.Join([]string{firstName, lastName}, " ")
 }

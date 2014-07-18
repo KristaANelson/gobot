@@ -1,9 +1,10 @@
 package carlton
 
 import (
-	"fmt"
 	"math/rand"
 	"net/http"
+
+	"github.com/arjunsharma/gobot/presenters"
 )
 
 func DanceHandler(writer http.ResponseWriter, request *http.Request) {
@@ -14,9 +15,8 @@ func DanceHandler(writer http.ResponseWriter, request *http.Request) {
 		"http://imgur.com/kKXW55q.gif",
 		"http://imgur.com/OE5KuZH.gif",
 	}
-
 	danceIndex := int(5 * rand.Float32())
-	fmt.Fprintf(writer, "<html><body><img src='%s' /></body></html>", imageSet[danceIndex])
 
+	presenters.PresentJson("carlton", imageSet[danceIndex], writer)
 	return
 }

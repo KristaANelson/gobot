@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/arjunsharma/gobot/presenters"
 )
 
 func RandomHandler(writer http.ResponseWriter, request *http.Request) {
@@ -26,7 +28,6 @@ func RandomHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(writer, "<html><body><img src='%s' /></body></html>", resp["pug"].(string))
-
+	presenters.PresentJson("pug", resp["pug"], writer)
 	return
 }

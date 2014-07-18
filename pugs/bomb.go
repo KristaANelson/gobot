@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/arjunsharma/gobot/presenters"
 	"github.com/gorilla/mux"
 )
 
@@ -37,11 +38,6 @@ func BombHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(writer, "<html><body>")
-	for _, pugUrl := range resp["pugs"].([]interface{}) {
-		fmt.Fprintf(writer, "<img src='%s' />", pugUrl.(string))
-	}
-	fmt.Fprintf(writer, "</body></html>")
-
+	presenters.PresentJson("pugs", resp["pugs"], writer)
 	return
 }

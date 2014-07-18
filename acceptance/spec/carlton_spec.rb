@@ -7,7 +7,9 @@ describe 'Carlton' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(1)
+      json = JSON.parse(response.body)
+      expect(json['carlton']).to_not be nil
+      expect(json['carlton'].scan(/imgur/).count).to eq(1)
     end
   end
 end

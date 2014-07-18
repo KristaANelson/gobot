@@ -1,10 +1,12 @@
 package facts
 
 import (
-"encoding/json"
-"fmt"
-"io/ioutil"
-"net/http"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/arjunsharma/gobot/presenters"
 )
 
 func CatHandler(writer http.ResponseWriter, request *http.Request) {
@@ -26,17 +28,6 @@ func CatHandler(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	presentedResponse := make(map[string]interface{})
-	presentedResponse["fact"] = resp["facts"].([]interface{})[0].(string)
-
-	jsonResponse, err := json.Marshal(presentedResponse)
-	if err != nil {
-		fmt.Println(err)
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	writer.Write(jsonResponse)
-
+	presenters.PresentJson("fact", resp["facts"].([]interface{})[0].(string), writer)
 	return
 }

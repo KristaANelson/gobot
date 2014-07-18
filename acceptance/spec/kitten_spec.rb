@@ -7,7 +7,9 @@ describe 'Kittens' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(1)
+      json = JSON.parse(response.body)
+      expect(json['kitten']).to_not be nil
+      expect(json['kitten'].scan(/placekitten/).count).to eq(1)
     end
   end
 
@@ -17,7 +19,10 @@ describe 'Kittens' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(6)
+      json = JSON.parse(response.body)
+      expect(json['kittens'].length).to eq(6)
+      expect(json['kittens'][0].scan(/placekitten/).count).to eq(1)
+      expect(json['kittens'][5].scan(/placekitten/).count).to eq(1)
     end
   end
 end

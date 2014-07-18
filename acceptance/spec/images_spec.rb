@@ -7,7 +7,9 @@ describe 'Images' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(1)
+      json = JSON.parse(response.body)
+      expect(json['image']).to_not be nil
+      expect(json['image'].length).to be > 10
     end
   end
 end

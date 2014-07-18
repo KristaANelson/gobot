@@ -1,46 +1,60 @@
 package names
 
 import (
-"encoding/json"
-"encoding/csv"
-"strconv"
-"net/http"
+	"encoding/csv"
+	"fmt"
+	"net/http"
+	"strconv"
+
+	"github.com/arjunsharma/gobot/presenters"
+	"github.com/gorilla/mux"
 )
 
-type NameResponse struct {
-	Name string `json:"name"`
-}
-
 func JsonNameHandler(writer http.ResponseWriter, request *http.Request) {
-	numNamesParam := request.URL.Query().Get("limit")
-	numNames, err := strconv.ParseInt(numNamesParam, 10, 0)
+	var err error
+	countStr := mux.Vars(request)["count"]
+	count := 1
+	if countStr != "" {
+		count, err = strconv.Atoi(countStr)
 		if err != nil {
-		numNames = 1
+			fmt.Println(err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 
-	response := []NameResponse{}
-	for i := 0; int64(i) < numNames; i++ {
+	nameList := []string{}
+	for i := 0; i < count; i++ {
 		name := randomName()
-		response = append(response, NameResponse{Name: name})
+		nameList = append(nameList, name)
 	}
 
-	jsonResponse, _ := json.Marshal(response)
-	writer.Write(jsonResponse)
-
+	presenters.PresentJson("names", nameList, writer)
 	return
 }
 
 func CsvNameHandler(writer http.ResponseWriter, request *http.Request) {
-	numNamesParam := request.URL.Query().Get("limit")
-	numNames, err := strconv.ParseInt(numNamesParam, 10, 0)
+	var err error
+	countStr := mux.Vars(request)["count"]
+	count := 1
+	if countStr != "" {
+		count, err = strconv.Atoi(countStr)
 		if err != nil {
-		numNames = 1
+			fmt.Println(err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 
 	csvWriter := csv.NewWriter(writer)
 
-	for i := 0; int64(i) < numNames; i++ {
-		csvWriter.Write([]string{randomName()})
+	for i := 0; i < count; i++ {
+		err = csvWriter.Write([]string{randomName()})
+		if err != nil {
+			fmt.Println(err)
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 
 	csvWriter.Flush()

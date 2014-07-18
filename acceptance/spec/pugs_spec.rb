@@ -7,7 +7,9 @@ describe 'Pugs' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(1)
+      json = JSON.parse(response.body)
+      expect(json['pug']).to_not be nil
+      expect(json['pug'].length).to be > 10
     end
   end
 
@@ -17,7 +19,10 @@ describe 'Pugs' do
       response = Net::HTTP.get_response(uri)
 
       expect(response.code).to eq('200')
-      expect(response.body.scan(/<img/).count).to eq(4)
+      json = JSON.parse(response.body)
+      expect(json['pugs'].length).to eq(4)
+      expect(json['pugs'][0].length).to be > 10
+      expect(json['pugs'][3].length).to be > 10
     end
   end
 end

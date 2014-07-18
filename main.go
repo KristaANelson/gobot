@@ -32,8 +32,10 @@ func main() {
 
 	router.HandleFunc("/carlton", carlton.DanceHandler)
 
-	router.HandleFunc("/names", names.CsvNameHandler).Headers("Accept", "text/csv")
-	router.HandleFunc("/names", names.JsonNameHandler)
+	router.HandleFunc("/names/random", names.CsvNameHandler).Headers("Accept", "text/csv")
+	router.HandleFunc("/names/random", names.JsonNameHandler)
+	router.HandleFunc("/names/bomb/{count}", names.CsvNameHandler).Headers("Accept", "text/csv")
+	router.HandleFunc("/names/bomb/{count}", names.JsonNameHandler)
 
 	router.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
 		writer.WriteHeader(200)
@@ -41,11 +43,12 @@ func main() {
 		routes["routes"] = map[string]interface{}{
 			"pug_bomb":      "/pugs/bomb/:count",
 			"pug_random":    "/pugs/random",
-			"kitten_bomb":   "/pugs/bomb/:count",
-			"kitten_random": "/pugs/random",
+			"kitten_bomb":   "/kittens/bomb/:count",
+			"kitten_random": "/kittens/random",
 			"cat_facts":     "/facts/cat",
 			"image_query":   "/images/:query",
-			"names":       "/names",
+			"names_random":  "/names/random",
+			"name_bomb":     "/names/bomb/:count",
 			"soothe":        "/soothe",
 			"carlton":       "/carlton",
 		}
