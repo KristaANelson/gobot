@@ -9,6 +9,7 @@ import (
 	"github.com/arjunsharma/gobot/images"
 	"github.com/arjunsharma/gobot/kittens"
 	"github.com/arjunsharma/gobot/names"
+	"github.com/arjunsharma/gobot/numberformatter"
 	"github.com/arjunsharma/gobot/pugs"
 	"github.com/arjunsharma/gobot/soothe"
 	"github.com/gorilla/mux"
@@ -34,6 +35,8 @@ func main() {
 	router.HandleFunc("/names/random", names.JsonNameHandler)
 	router.HandleFunc("/names/bomb/{count}", names.CsvNameHandler).Headers("Accept", "text/csv")
 	router.HandleFunc("/names/bomb/{count}", names.JsonNameHandler)
+
+	router.HandleFunc("/number_suffix/{number}", numberformatter.NumberFormatterHandler)
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	http.Handle("/", router)
